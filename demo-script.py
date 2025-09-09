@@ -64,20 +64,29 @@ def create_interactive_histogram():
 #####################################
 
 def main():
-    # Chart 1 - Scatter Plot
+    # Chart 1 - Scatter Plot: Passengers over Time (by Month)
     print("Creating Chart 1: Scatter Plot...")
-    penguins_df = sns.load_dataset("penguins")
-    _ = plot_scatter_plot(penguins_df)
+    flights_df = sns.load_dataset("flights")
+    _ = sns.scatterplot(
+        data=flights_df, 
+        x="year", 
+        y="passengers", 
+        hue="month"
+    ).set_title("Chart 1. Airline Passenger Traffic Over Time (by Month)")
 
-    # Chart 2 - Bar Chart
+    # Chart 2 - Bar Chart: Total Passengers per Year
     print("Creating Chart 2: Bar Chart...")
-    sales_data_dict = {"Category": ["A", "B", "C"], "Sales": [200, 150, 300]}
-    sales_df = pd.DataFrame(sales_data_dict)
-    _ = plot_bar_chart(sales_df)
+    yearly_passengers = flights_df.groupby("year")["passengers"].sum().reset_index()
+    _ = sns.barplot(
+        x="year", 
+        y="passengers", 
+        data=yearly_passengers
+    ).set_title("Chart 2. Total Airline Passengers by Year")
 
     # Display static charts together
     print("Displaying static charts...")
     plt.show()
+
 
     # Chart 3 - Interactive Histogram
     print("Creating Chart 3: Interactive Histogram...")
